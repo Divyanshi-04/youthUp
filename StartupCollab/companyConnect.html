@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Connect</title>
+    <link rel="stylesheet" href="company.css">
+    <script src="company.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Company Connect</h1>
+        <button onclick="goBack()">⬅ Back</button>
+    </header>
+    
+    <main>
+        <section id="company-list">
+            <h2>Available Companies</h2>
+            <ul id="companies">
+                <li>Startup A <button onclick="connect('Startup A')">Connect</button></li>
+                <li>Startup B <button onclick="connect('Startup B')">Connect</button></li>
+                <li>Startup C <button onclick="connect('Startup C')">Connect</button></li>
+            </ul>
+        </section>
+
+        <section id="request-connection">
+            <h2>Request a Connection</h2>
+            <input type="text" id="companyName" placeholder="Enter Company Name">
+            <button onclick="requestConnection()">Request</button>
+            <p id="responseMessage"></p>
+        </section>
+    </main>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function connect(company) {
+            alert(`Connection request sent to ${company}!`);
+        }
+
+        function requestConnection() {
+            let company = document.getElementById("companyName").value;
+            if (company.trim() === "") {
+                document.getElementById("responseMessage").innerText = "Please enter a company name!";
+            } else {
+                document.getElementById("responseMessage").innerText = `Connection request sent to ${company}!`;
+            }
+        }
+    </script>
+</body>
+</html>

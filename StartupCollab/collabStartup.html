@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Collaboration Hub</title>
+    <link rel="stylesheet" href="collab.css">
+    <script defer src="collab.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 15px 15px;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            justify-content: center;
+        }
+        section {
+            background: linear-gradient(135deg, #ffffff, #e3f2fd);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+        }
+        section:hover {
+            transform: translateY(-5px);
+        }
+        button {
+            padding: 12px 24px;
+            margin-top: 10px;
+            border: none;
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            transform: scale(1.05);
+        }
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            section {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header> 🤝 Startup Collaboration Hub </header>
+    <main>
+        <section id="company-connect">
+            <h2>Company Connect</h2>
+            <p>Network and collaborate with other startups and companies.</p>
+            <button>Connect Now</button>
+        </section>
+        <section id="resources-tasks">
+            <h2>Resource & Task Management</h2>
+            <p>Upload and share important documents, assign and track tasks.</p>
+            <button>Manage Resources & Tasks</button>
+        </section>
+        <section id="idea-validation">
+            <h2>Idea Validation Polls</h2>
+            <p>Get feedback on your startup ideas from the community.</p>
+            <button>Start Poll</button>
+        </section>
+        <section id="calendar">
+            <h2>Integrated Calendar</h2>
+            <p>Schedule meetings and sync with your team.</p>
+            <button>Open Calendar</button>
+        </section>
+    </main>
+</body>
+</html>
