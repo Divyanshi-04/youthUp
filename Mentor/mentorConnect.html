@@ -6,93 +6,63 @@
     <title>Mentor Matching</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script>
-        let currentPage = 'landing';
-        let userType = 'mentor';
-
-        function setUserType(type) {
-            userType = type;
-        }
-
         function setCurrentPage(page) {
-            currentPage = page;
-            render();
-        }
-
-        function render() {
-            document.getElementById('app').innerHTML = pages[currentPage]();
+            document.getElementById('app').innerHTML = pages[page]();
         }
 
         const pages = {
             landing: () => `
                 <div class="min-h-screen flex flex-col items-center justify-center bg-blue-100 p-6">
                     <h1 class="text-4xl font-bold mb-4 text-center">Find the one who resonates with you!</h1>
-                    <p class="text-lg text-gray-700 mb-8 text-center">Connect with industry experts to take your idea to the next level.</p>
-                    <div class="w-full max-w-md mb-8 bg-white shadow-md p-6 rounded-lg">
-                        <div class="space-y-4">
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="userType" value="mentor" checked onclick="setUserType('mentor')">
-                                <span class="text-lg">I'm looking for a Mentor</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="userType" value="cofounder" onclick="setUserType('cofounder')">
-                                <span class="text-lg">I'm looking for a Cofounder</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="userType" value="investor" onclick="setUserType('investor')">
-                                <span class="text-lg">I'm looking for an Investor</span>
-                            </label>
+                    <p class="text-lg text-gray-700 mb-8 text-center">Connect with industry experts to take your idea to the next level</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
+                        <div class="bg-white shadow-md p-6 rounded-lg text-center">
+                            <h2 class="text-2xl font-semibold mb-4">Find a Mentor</h2>
+                            <p class="text-gray-600 mb-4">Get guidance from experienced mentors.</p>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg" onclick="setCurrentPage('mentor')">Explore</button>
+                        </div>
+                        <div class="bg-white shadow-md p-6 rounded-lg text-center">
+                            <h2 class="text-2xl font-semibold mb-4">Find a Cofounder</h2>
+                            <p class="text-gray-600 mb-4">Connect with like-minded entrepreneurs.</p>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg" onclick="setCurrentPage('cofounder')">Explore</button>
+                        </div>
+                        <div class="bg-white shadow-md p-6 rounded-lg text-center">
+                            <h2 class="text-2xl font-semibold mb-4">Find an Investor</h2>
+                            <p class="text-gray-600 mb-4">Secure funding to grow your business.</p>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg" onclick="setCurrentPage('investor')">Explore</button>
                         </div>
                     </div>
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg" onclick="setCurrentPage('dashboard')">
-                        Find ${userType === 'mentor' ? 'Mentors' : userType === 'cofounder' ? 'Cofounders' : 'Investors'}
-                    </button>
                 </div>`
             ,
-            dashboard: () => `
+            mentor: () => generateDashboard('Mentor'),
+            cofounder: () => generateDashboard('Cofounder'),
+            investor: () => generateDashboard('Investor')
+        };
+
+        function generateDashboard(userType) {
+            return `
                 <div class="p-6 bg-gray-50 min-h-screen">
-                    <h2 class="text-3xl font-bold mb-4">Your ${userType.charAt(0).toUpperCase() + userType.slice(1)} Matches</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Your ${userType} Matches</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
                         ${[1, 2, 3].map(id => `
-                            <div class="bg-white shadow-lg p-6 rounded-lg">
+                            <div class="bg-white shadow-lg p-6 rounded-lg text-center">
                                 <div class="w-16 h-16 bg-blue-100 rounded-full mb-4 mx-auto flex items-center justify-center">
                                     <span class="text-2xl text-blue-500">👤</span>
                                 </div>
-                                <h3 class="text-xl font-semibold text-center mb-2">
-                                    ${userType.charAt(0).toUpperCase() + userType.slice(1)} ${id}
-                                </h3>
+                                <h3 class="text-xl font-semibold mb-2">${userType} ${id}</h3>
                                 <p class="text-gray-600 mb-1">Industry: Technology</p>
                                 <p class="text-gray-600 mb-4">Experience: 5+ years</p>
-                                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2" onclick="setCurrentPage('chat')">Chat</button>
+                                <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg w-full" onclick="setCurrentPage('chat')">Chat</button>
                             </div>`).join('')}
                     </div>
-                </div>`
-            ,
-            chat: () => `
-                <div class="p-6 bg-gray-50 min-h-screen">
-                    <div class="max-w-3xl mx-auto">
-                        <div class="flex items-center mb-6">
-                            <button class="mr-4 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2" onclick="setCurrentPage('dashboard')">← Back</button>
-                            <h2 class="text-3xl font-bold">Chat with Your ${userType.charAt(0).toUpperCase() + userType.slice(1)}</h2>
-                        </div>
-                        <div class="border rounded-lg bg-white shadow-lg p-4">
-                            <div class="h-64 mb-4 overflow-y-auto space-y-4">
-                                <div class="flex justify-end">
-                                    <div class="bg-blue-500 text-white rounded-lg p-3 max-w-md">Hello! I'd love to learn more about your startup.</div>
-                                </div>
-                                <div class="flex justify-start">
-                                    <div class="bg-gray-100 rounded-lg p-3 max-w-md">Hi! Thanks for connecting. We're building a platform for...</div>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <input type="text" placeholder="Type a message..." class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <button class="bg-blue-500 hover:bg-blue-600 text-white px-6">Send</button>
-                            </div>
-                        </div>
+                    <div class="text-center mt-6">
+                        <button class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-lg" onclick="setCurrentPage('landing')">← Back</button>
                     </div>
-                </div>`
-        };
+                </div>`;
+        }
 
-        window.onload = () => render();
+        window.onload = () => setCurrentPage('landing');
     </script>
 </head>
 <body>
