@@ -21,43 +21,49 @@
             color: white;
             padding: 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column; /* Stack title & nav */
             align-items: center;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
         }
         header h1 {
             margin: 0;
-            flex-grow: 1;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
         }
         header button {
-            background-color: white;
+            background-color: black;
+            color: white;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
         header button:hover {
-            background-color: #e0e0e0;
+            background-color: #333;
         }
         /* Navigation Bar */
         nav {
-            background: #0056b3;
-            padding: 10px;
-            text-align: center;
+            background: linear-gradient(to right, #0056b3, #003f7f);
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center; /* Center the nav bar */
+            gap: 30px;
+            width: 100%; /* Ensure it spans full width */
         }
         nav a {
             color: white;
             text-decoration: none;
             font-size: 18px;
-            margin: 0 15px;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
         }
         nav a:hover {
             color: #ffcc00;
+            transform: translateY(-2px);
         }
         /* Main Content */
         main {
@@ -147,21 +153,25 @@
             section {
                 width: 100%;
             }
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Task Manager</h1>
+        <h1>Resource and Task Manager</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#tasks">Tasks</a>
+            <a href="#projects">Projects</a>
+            <a href="#settings">Settings</a>
+        </nav>
         <button>Sign Out</button>
     </header>
-    
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#tasks">Tasks</a>
-        <a href="#projects">Projects</a>
-        <a href="#settings">Settings</a>
-    </nav>
     
     <main>
         <section>
@@ -174,15 +184,15 @@
             <h2>Current Tasks</h2>
             <ul class="task-list">
                 <li>
-                    Complete project presentation
+                    Pending Documentation
                     <button class="delete-btn">Delete</button>
                 </li>
                 <li>
-                    Review team updates
+                    Review Team Presentation 
                     <button class="delete-btn">Delete</button>
                 </li>
                 <li>
-                    Schedule weekly meeting
+                    Raising Ticket 
                     <button class="delete-btn">Delete</button>
                 </li>
             </ul>
