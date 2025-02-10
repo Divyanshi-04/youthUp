@@ -1,220 +1,224 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Calendar</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fc;
-            color: #333;
-            text-align: center;
-        }
+      /* Global Styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f7fc;
+        color: #333;
+        text-align: center;
+      }
 
-        /* Header */
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        }
+      /* Header */
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        /* Calendar Container */
+      /* Calendar Container */
+      .calendar-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Calendar Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+
+      td:hover {
+        background-color: #f0f0f0;
+      }
+
+      .event {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        padding: 5px;
+        display: block;
+        margin-top: 5px;
+      }
+
+      /* Form */
+      .event-form {
+        margin-top: 20px;
+      }
+
+      input,
+      button {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Upcoming Events */
+      .upcoming-events {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
         .calendar-container {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          width: 90%;
         }
-
-        /* Calendar Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        td:hover {
-            background-color: #f0f0f0;
-        }
-
-        .event {
-            background-color: #28a745;
-            color: white;
-            border-radius: 5px;
-            padding: 5px;
-            display: block;
-            margin-top: 5px;
-        }
-
-        /* Form */
-        .event-form {
-            margin-top: 20px;
-        }
-
-        input, button {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Upcoming Events */
-        .upcoming-events {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .calendar-container {
-                width: 90%;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Event Calendar</h1>
+      <h1>Event Calendar</h1>
     </header>
 
     <div class="calendar-container">
-        <h2>Schedule Meetings & Events</h2>
-        <table id="calendar">
-            <thead>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Calendar rows will be generated dynamically -->
-            </tbody>
-        </table>
+      <h2>Schedule Meetings & Events</h2>
+      <table id="calendar">
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Calendar rows will be generated dynamically -->
+        </tbody>
+      </table>
 
-        <div class="event-form">
-            <h3>Add an Event</h3>
-            <input type="date" id="eventDate">
-            <input type="text" id="eventTitle" placeholder="Event Title">
-            <button onclick="addEvent()">Add Event</button>
-            <p id="eventMessage"></p>
-        </div>
+      <div class="event-form">
+        <h3>Add an Event</h3>
+        <input type="date" id="eventDate" />
+        <input type="text" id="eventTitle" placeholder="Event Title" />
+        <button onclick="addEvent()">Add Event</button>
+        <p id="eventMessage"></p>
+      </div>
     </div>
 
     <div class="upcoming-events">
-        <h3>Upcoming Meetings</h3>
-        <ul id="eventList"></ul>
+      <h3>Upcoming Meetings</h3>
+      <ul id="eventList"></ul>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            generateCalendar();
+      document.addEventListener("DOMContentLoaded", function () {
+        generateCalendar();
 
-            function generateCalendar() {
-                let today = new Date();
-                let year = today.getFullYear();
-                let month = today.getMonth();
-                let firstDay = new Date(year, month, 1).getDay();
-                let lastDate = new Date(year, month + 1, 0).getDate();
+        function generateCalendar() {
+          let today = new Date();
+          let year = today.getFullYear();
+          let month = today.getMonth();
+          let firstDay = new Date(year, month, 1).getDay();
+          let lastDate = new Date(year, month + 1, 0).getDate();
 
-                let tbody = document.querySelector("#calendar tbody");
-                tbody.innerHTML = "";
+          let tbody = document.querySelector("#calendar tbody");
+          tbody.innerHTML = "";
 
-                let date = 1;
-                for (let i = 0; i < 6; i++) {
-                    let row = document.createElement("tr");
-                    for (let j = 0; j < 7; j++) {
-                        let cell = document.createElement("td");
-                        if (i === 0 && j < firstDay) {
-                            cell.innerHTML = "";
-                        } else if (date > lastDate) {
-                            break;
-                        } else {
-                            cell.innerHTML = date;
-                            cell.setAttribute("data-date", `${year}-${month + 1}-${date}`);
-                            cell.addEventListener("click", function () {
-                                document.getElementById("eventDate").value = this.getAttribute("data-date");
-                            });
-                            date++;
-                        }
-                        row.appendChild(cell);
-                    }
-                    tbody.appendChild(row);
-                }
-            }
-
-            function addEvent() {
-                let eventDate = document.getElementById("eventDate").value;
-                let eventTitle = document.getElementById("eventTitle").value.trim();
-                let eventMessage = document.getElementById("eventMessage");
-                let eventList = document.getElementById("eventList");
-
-                if (eventDate === "" || eventTitle === "") {
-                    eventMessage.innerText = "Please enter an event title and date!";
-                    eventMessage.style.color = "red";
-                    return;
-                }
-
-                let allCells = document.querySelectorAll("#calendar td");
-                allCells.forEach(cell => {
-                    if (cell.getAttribute("data-date") === eventDate) {
-                        let eventSpan = document.createElement("span");
-                        eventSpan.classList.add("event");
-                        eventSpan.innerText = eventTitle;
-                        cell.appendChild(document.createElement("br"));
-                        cell.appendChild(eventSpan);
-                    }
+          let date = 1;
+          for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+              let cell = document.createElement("td");
+              if (i === 0 && j < firstDay) {
+                cell.innerHTML = "";
+              } else if (date > lastDate) {
+                break;
+              } else {
+                cell.innerHTML = date;
+                cell.setAttribute("data-date", `${year}-${month + 1}-${date}`);
+                cell.addEventListener("click", function () {
+                  document.getElementById("eventDate").value =
+                    this.getAttribute("data-date");
                 });
-
-                let listItem = document.createElement("li");
-                listItem.innerText = `${eventDate}: ${eventTitle}`;
-                eventList.appendChild(listItem);
-
-                eventMessage.innerText = "Event added successfully!";
-                eventMessage.style.color = "green";
+                date++;
+              }
+              row.appendChild(cell);
             }
+            tbody.appendChild(row);
+          }
+        }
 
-            window.addEvent = addEvent;
-        });
+        function addEvent() {
+          let eventDate = document.getElementById("eventDate").value;
+          let eventTitle = document.getElementById("eventTitle").value.trim();
+          let eventMessage = document.getElementById("eventMessage");
+          let eventList = document.getElementById("eventList");
+
+          if (eventDate === "" || eventTitle === "") {
+            eventMessage.innerText = "Please enter an event title and date!";
+            eventMessage.style.color = "red";
+            return;
+          }
+
+          let allCells = document.querySelectorAll("#calendar td");
+          allCells.forEach((cell) => {
+            if (cell.getAttribute("data-date") === eventDate) {
+              let eventSpan = document.createElement("span");
+              eventSpan.classList.add("event");
+              eventSpan.innerText = eventTitle;
+              cell.appendChild(document.createElement("br"));
+              cell.appendChild(eventSpan);
+            }
+          });
+
+          let listItem = document.createElement("li");
+          listItem.innerText = `${eventDate}: ${eventTitle}`;
+          eventList.appendChild(listItem);
+
+          eventMessage.innerText = "Event added successfully!";
+          eventMessage.style.color = "green";
+        }
+
+        window.addEvent = addEvent;
+      });
     </script>
-</body>
+  </body>
 </html>
