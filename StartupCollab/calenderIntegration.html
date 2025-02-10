@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrated Calendar</title>
+    <title>Event Calendar</title>
     <style>
         /* Global Styles */
         body {
@@ -20,28 +20,8 @@
             background-color: #007bff;
             color: white;
             padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            flex-grow: 1;
-        }
-
-        header button {
-            background-color: white;
-            border: none;
-            padding: 8px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        header button:hover {
-            background-color: #e0e0e0;
         }
 
         /* Calendar Container */
@@ -81,6 +61,8 @@
             color: white;
             border-radius: 5px;
             padding: 5px;
+            display: block;
+            margin-top: 5px;
         }
 
         /* Form */
@@ -88,7 +70,7 @@
             margin-top: 20px;
         }
 
-        input, select, button {
+        input, button {
             width: 90%;
             padding: 10px;
             margin: 10px 0;
@@ -108,6 +90,15 @@
             background-color: #0056b3;
         }
 
+        /* Upcoming Events */
+        .upcoming-events {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .calendar-container {
@@ -118,8 +109,7 @@
 </head>
 <body>
     <header>
-        <h1>Integrated Calendar</h1>
-        <button onclick="goBack()">⬅ Back</button>
+        <h1>Event Calendar</h1>
     </header>
 
     <div class="calendar-container">
@@ -150,13 +140,14 @@
         </div>
     </div>
 
+    <div class="upcoming-events">
+        <h3>Upcoming Meetings</h3>
+        <ul id="eventList"></ul>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             generateCalendar();
-
-            function goBack() {
-                window.history.back();
-            }
 
             function generateCalendar() {
                 let today = new Date();
@@ -171,10 +162,8 @@
                 let date = 1;
                 for (let i = 0; i < 6; i++) {
                     let row = document.createElement("tr");
-
                     for (let j = 0; j < 7; j++) {
                         let cell = document.createElement("td");
-
                         if (i === 0 && j < firstDay) {
                             cell.innerHTML = "";
                         } else if (date > lastDate) {
@@ -185,10 +174,8 @@
                             cell.addEventListener("click", function () {
                                 document.getElementById("eventDate").value = this.getAttribute("data-date");
                             });
-
                             date++;
                         }
-
                         row.appendChild(cell);
                     }
                     tbody.appendChild(row);
@@ -199,6 +186,7 @@
                 let eventDate = document.getElementById("eventDate").value;
                 let eventTitle = document.getElementById("eventTitle").value.trim();
                 let eventMessage = document.getElementById("eventMessage");
+                let eventList = document.getElementById("eventList");
 
                 if (eventDate === "" || eventTitle === "") {
                     eventMessage.innerText = "Please enter an event title and date!";
@@ -217,12 +205,14 @@
                     }
                 });
 
+                let listItem = document.createElement("li");
+                listItem.innerText = `${eventDate}: ${eventTitle}`;
+                eventList.appendChild(listItem);
+
                 eventMessage.innerText = "Event added successfully!";
                 eventMessage.style.color = "green";
             }
 
-            // Attach functions to global scope
-            window.goBack = goBack;
             window.addEvent = addEvent;
         });
     </script>
