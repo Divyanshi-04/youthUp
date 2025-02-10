@@ -1,96 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Live Leaderboard & Voting</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
 
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            font-size: 24px;
-            font-weight: bold;
-        }
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: bold;
+      }
 
-        main {
-            padding: 20px;
-        }
+      main {
+        padding: 20px;
+      }
 
-        #leaderboard {
-            width: 80%;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+      #leaderboard {
+        width: 80%;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        .startup {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin: 10px 0;
-            background: #e9ecef;
-            border-radius: 5px;
-        }
+      .startup {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0;
+        background: #e9ecef;
+        border-radius: 5px;
+      }
 
-        .vote-buttons {
-            display: flex;
-            gap: 10px;
-        }
+      .vote-buttons {
+        display: flex;
+        gap: 10px;
+      }
 
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+      button:hover {
+        background-color: #0056b3;
+      }
 
-        .rank {
-            font-weight: bold;
-            font-size: 18px;
-            color: #007bff;
-        }
+      .rank {
+        font-weight: bold;
+        font-size: 18px;
+        color: #007bff;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <header>Live Leaderboard & Voting</header>
 
-<header>Live Leaderboard & Voting</header>
-
-<main>
-    <div id="leaderboard">
+    <main>
+      <div id="leaderboard">
         <h2>Leaderboard</h2>
         <div id="startup-list">
-            <!-- Startups will be dynamically inserted here -->
+          <!-- Startups will be dynamically inserted here -->
         </div>
-    </div>
-</main>
+      </div>
+    </main>
 
-<script>
-    let startups = [
+    <script>
+      let startups = [
         { name: "Startup A", votes: 0 },
         { name: "Startup B", votes: 0 },
-        { name: "Startup C", votes: 0 }
-    ];
+        { name: "Startup C", votes: 0 },
+      ];
 
-    function renderLeaderboard() {
+      function renderLeaderboard() {
         let list = document.getElementById("startup-list");
         list.innerHTML = "";
 
@@ -98,10 +97,10 @@
         startups.sort((a, b) => b.votes - a.votes);
 
         startups.forEach((startup, index) => {
-            let div = document.createElement("div");
-            div.className = "startup";
-            div.innerHTML = `
-                <span class="rank">#${index + 1}</span>
+          let div = document.createElement("div");
+          div.className = "startup";
+          div.innerHTML = `
+                <span class="rank">${index + 1}</span>
                 <span>${startup.name}</span>
                 <span>Votes: ${startup.votes}</span>
                 <div class="vote-buttons">
@@ -109,21 +108,20 @@
                     <button onclick="vote('${startup.name}', -1)">👎</button>
                 </div>
             `;
-            list.appendChild(div);
+          list.appendChild(div);
         });
-    }
+      }
 
-    function vote(name, amount) {
-        let startup = startups.find(s => s.name === name);
+      function vote(name, amount) {
+        let startup = startups.find((s) => s.name === name);
         if (startup) {
-            startup.votes += amount;
-            renderLeaderboard();
+          startup.votes += amount;
+          renderLeaderboard();
         }
-    }
+      }
 
-    // Initial render
-    renderLeaderboard();
-</script>
-
-</body>
+      // Initial render
+      renderLeaderboard();
+    </script>
+  </body>
 </html>
