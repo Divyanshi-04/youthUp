@@ -1,124 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Live Video Pitch Deck</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
 
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            font-size: 24px;
-            font-weight: bold;
-        }
+      #sidebar {
+        width: 30%;
+        background: #007bff;
+        color: white;
+        padding: 20px;
+        overflow-y: auto;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
 
-        main {
-            padding: 20px;
-        }
+      #main-content {
+        flex: 1;
+        padding: 20px;
+        text-align: center;
+      }
 
-        #video-container {
-            width: 70%;
-            margin: auto;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 2px solid #007bff; /* Added border */
-            position: relative;
-        }
+      #video-container {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 2px solid #007bff;
+      }
 
-        video {
-            width: 100%;
-            border-radius: 5px;
-        }
+      video {
+        width: 100%;
+        border-radius: 5px;
+      }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
 
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .video-item {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        color: black;
+      }
     </style>
-</head>
-<body>
-
-<header>Virtual Pitch Deck</header>
-
-<main>
-    <div id="video-container">
-        <video id="videoPlayer" autoplay playsinline></video>
+  </head>
+  <body>
+    <div id="sidebar">
+      <h2>Recent Pitches</h2>
+      <div id="video-list">
+        <!-- Uploaded videos will appear here -->
+      </div>
     </div>
 
-    <div class="controls">
+    <div id="main-content">
+      <h1>Start Your Live Pitch</h1>
+      <div id="video-container">
+        <video id="videoPlayer" autoplay playsinline></video>
+      </div>
+      <div class="controls">
         <button onclick="startStream()">📡 Start Live</button>
         <button onclick="stopStream()">🛑 Stop</button>
-        <button onclick="toggleMute()">🔇/🔊 Mute/Unmute</button>
+        <button onclick="toggleMute()">🔇/🔊 Mute</button>
         <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+      </div>
     </div>
-</main>
 
-<script>
-    let video = document.getElementById("videoPlayer");
-    let stream = null;
+    <script>
+      let video = document.getElementById("videoPlayer");
+      let stream = null;
+      let recordedChunks = [];
+      let mediaRecorder;
 
-    async function startStream() {
+      async function startStream() {
         try {
-            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            video.srcObject = stream;
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          video.srcObject = stream;
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = (event) =>
+            recordedChunks.push(event.data);
+          mediaRecorder.start();
         } catch (error) {
-            alert("Error accessing webcam: " + error);
+          alert("Error accessing webcam: " + error);
         }
-    }
+      }
 
-    function stopStream() {
+      function stopStream() {
         if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            video.srcObject = null;
+          stream.getTracks().forEach((track) => track.stop());
+          video.srcObject = null;
+          mediaRecorder.stop();
+          saveVideo();
         }
-    }
+      }
 
-    function toggleMute() {
+      function toggleMute() {
         if (stream) {
-            let audioTrack = stream.getAudioTracks()[0];
-            audioTrack.enabled = !audioTrack.enabled;
+          let audioTrack = stream.getAudioTracks()[0];
+          audioTrack.enabled = !audioTrack.enabled;
         }
-    }
+      }
 
-    function toggleFullscreen() {
+      function toggleFullscreen() {
         if (video.requestFullscreen) {
-            video.requestFullscreen();
+          video.requestFullscreen();
         } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
+          video.webkitRequestFullscreen();
         } else if (video.mozRequestFullScreen) {
-            video.mozRequestFullScreen();
+          video.mozRequestFullScreen();
         } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
+          video.msRequestFullscreen();
         }
-    }
-</script>
+      }
 
-</body>
+      function saveVideo() {
+        let blob = new Blob(recordedChunks, { type: "video/webm" });
+        let url = URL.createObjectURL(blob);
+        let caption = prompt("Enter a caption for your video:");
+        if (caption) {
+          let videoList = document.getElementById("video-list");
+          let videoItem = document.createElement("div");
+          videoItem.classList.add("video-item");
+          videoItem.innerHTML = `<p>${caption} - ${new Date().toLocaleString()}</p><video src="${url}" controls width="100%"></video>`;
+          videoList.prepend(videoItem);
+        }
+      }
+    </script>
+  </body>
 </html>
