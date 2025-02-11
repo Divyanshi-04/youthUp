@@ -1,163 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Live Video Pitch Deck</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Pitch Deck</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        display: flex;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-      #sidebar {
-        width: 30%;
-        background: #007bff;
-        color: white;
-        padding: 20px;
-        overflow-y: auto;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
+        header {
+            background-color: #6a5acd;
+            color: white;
+            padding: 15px;
+            width: 100%;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-      #main-content {
-        flex: 1;
-        padding: 20px;
-        text-align: center;
-      }
+        #main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 90%;
+            padding: 20px;
+        }
 
-      #video-container {
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border: 2px solid #007bff;
-      }
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #6a5acd;
+            margin: 10px;
+            width: 45%;
+        }
 
-      video {
-        width: 100%;
-        border-radius: 5px;
-      }
+        video, iframe {
+            width: 100%;
+            border-radius: 5px;
+        }
 
-      .controls {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
-      }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-      button {
-        padding: 10px 15px;
-        font-size: 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #6a5acd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-      button:hover {
-        background-color: #0056b3;
-      }
+        button:hover {
+            background-color: #5a4ac0;
+        }
 
-      .video-item {
-        margin-bottom: 15px;
-        padding: 10px;
-        background: white;
-        border-radius: 5px;
-        color: black;
-      }
+        .upload-container {
+            margin-top: 15px;
+        }
+
+        #sidebar {
+            width: 90%;
+            background: #6a5acd;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+
+        .video-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            color: black;
+        }
     </style>
-  </head>
-  <body>
-    <div id="sidebar">
-      <h2>Recent Pitches</h2>
-      <div id="video-list">
-        <!-- Uploaded videos will appear here -->
-      </div>
+</head>
+<body>
+    <header>
+        <h1>Live Pitch Deck</h1>
+    </header>
+    
+    <div id="main-content">
+        <div class="container">
+            <h2>Live Video Pitch</h2>
+            <video id="videoPlayer" autoplay playsinline></video>
+            <div class="controls">
+                <button onclick="startStream()">📡 Start Live</button>
+                <button onclick="stopStream()">🛑 Stop</button>
+                <button onclick="toggleMute()">🔇/🔊 Mute</button>
+                <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2>Presentation Slides</h2>
+            <div id="pitchDeck">Upload your pitch deck to view slides</div>
+            <div class="controls">
+                <button id="prevBtn" onclick="prevSlide()" disabled>⬅ Previous</button>
+                <button id="nextBtn" onclick="nextSlide()" disabled>Next ➡</button>
+            </div>
+            <div class="upload-container">
+                <input type="file" id="fileInput" accept="image/*,application/pdf" multiple>
+            </div>
+        </div>
     </div>
 
-    <div id="main-content">
-      <h1>Start Your Live Pitch</h1>
-      <div id="video-container">
-        <video id="videoPlayer" autoplay playsinline></video>
-      </div>
-      <div class="controls">
-        <button onclick="startStream()">📡 Start Live</button>
-        <button onclick="stopStream()">🛑 Stop</button>
-        <button onclick="toggleMute()">🔇/🔊 Mute</button>
-        <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
-      </div>
+    <div id="sidebar">
+        <h2>Previous Pitches</h2>
+        <div id="video-list"></div>
     </div>
 
     <script>
-      let video = document.getElementById("videoPlayer");
-      let stream = null;
-      let recordedChunks = [];
-      let mediaRecorder;
+        let video = document.getElementById("videoPlayer");
+        let stream = null;
+        let recordedChunks = [];
+        let mediaRecorder;
+        let slides = [];
+        let currentSlideIndex = 0;
 
-      async function startStream() {
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          video.srcObject = stream;
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.ondataavailable = (event) =>
-            recordedChunks.push(event.data);
-          mediaRecorder.start();
-        } catch (error) {
-          alert("Error accessing webcam: " + error);
+        async function startStream() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = stream;
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (event) => recordedChunks.push(event.data);
+                mediaRecorder.start();
+            } catch (error) {
+                alert("Error accessing webcam: " + error);
+            }
         }
-      }
 
-      function stopStream() {
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-          video.srcObject = null;
-          mediaRecorder.stop();
-          saveVideo();
+        function stopStream() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                mediaRecorder.stop();
+                saveVideo();
+            }
         }
-      }
 
-      function toggleMute() {
-        if (stream) {
-          let audioTrack = stream.getAudioTracks()[0];
-          audioTrack.enabled = !audioTrack.enabled;
+        function toggleMute() {
+            if (stream) {
+                let audioTrack = stream.getAudioTracks()[0];
+                audioTrack.enabled = !audioTrack.enabled;
+            }
         }
-      }
 
-      function toggleFullscreen() {
-        if (video.requestFullscreen) {
-          video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-          video.webkitRequestFullscreen();
-        } else if (video.mozRequestFullScreen) {
-          video.mozRequestFullScreen();
-        } else if (video.msRequestFullscreen) {
-          video.msRequestFullscreen();
+        function toggleFullscreen() {
+            if (video.requestFullscreen) video.requestFullscreen();
         }
-      }
 
-      function saveVideo() {
-        let blob = new Blob(recordedChunks, { type: "video/webm" });
-        let url = URL.createObjectURL(blob);
-        let caption = prompt("Enter a caption for your video:");
-        if (caption) {
-          let videoList = document.getElementById("video-list");
-          let videoItem = document.createElement("div");
-          videoItem.classList.add("video-item");
-          videoItem.innerHTML = `<p>${caption} - ${new Date().toLocaleString()}</p><video src="${url}" controls width="100%"></video>`;
-          videoList.prepend(videoItem);
+        function saveVideo() {
+            let blob = new Blob(recordedChunks, { type: "video/webm" });
+            let url = URL.createObjectURL(blob);
+            let caption = prompt("Enter a caption for your video:");
+            if (caption) {
+                let videoList = document.getElementById("video-list");
+                let videoItem = document.createElement("div");
+                videoItem.classList.add("video-item");
+                videoItem.innerHTML = `<p>${caption} - ${new Date().toLocaleString()}</p><video src="${url}" controls width="100%"></video>`;
+                videoList.prepend(videoItem);
+            }
         }
-      }
+
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            let files = event.target.files;
+            slides = [];
+            currentSlideIndex = 0;
+            Array.from(files).forEach(file => {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    slides.push(e.target.result);
+                    updateViewer();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function updateViewer() {
+            let pitchDeck = document.getElementById("pitchDeck");
+            if (slides.length > 0) {
+                pitchDeck.innerHTML = `<img src="${slides[currentSlideIndex]}" style="width: 100%; border-radius: 10px;">`;
+                document.getElementById("prevBtn").disabled = currentSlideIndex === 0;
+                document.getElementById("nextBtn").disabled = currentSlideIndex === slides.length - 1;
+            }
+        }
+
+        function prevSlide() { if (currentSlideIndex > 0) { currentSlideIndex--; updateViewer(); } }
+        function nextSlide() { if (currentSlideIndex < slides.length - 1) { currentSlideIndex++; updateViewer(); } }
     </script>
-  </body>
+</body>
 </html>
